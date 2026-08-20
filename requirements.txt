@@ -1,0 +1,29 @@
+streamlit>=1.40.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-mistralai>=0.2.0
+mistralai>=1.0.0
+chromadb>=0.5.0
+langchain-chroma>=0.1.0
+sentence-transformers>=3.0.0
+huggingface-hub>=0.25.0
+faster-whisper>=1.0.0
+yt-dlp>=2024.10.0
+pydub>=0.25.1
+ffmpeg-python>=0.2.0
+python-dotenv>=1.0.0
+pypdf>=5.0.0
+docx2txt>=0.8
+requests>=2.34.0
+
+# NOTE: the PyPI package named "whisper" is Graphite's time-series database,
+# NOT speech recognition. OpenAI's Whisper is "openai-whisper" (it still
+# imports as `import whisper`). Installing the wrong one crashes on Windows.
+openai-whisper>=20250625
+
+# --- web UI (server.py + web/) ---
+fastapi>=0.115.0
+uvicorn>=0.30.0
+python-multipart>=0.0.9
+reportlab>=4.0.0

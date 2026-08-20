@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Meeting Assistant</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true">◆</span>
+    <span>AI Meeting Assistant</span>
+  </div>
+  <button id="themeToggle" class="ghost-btn" type="button" title="Toggle theme">
+    <span id="themeIcon">◐</span>
+  </button>
+</header>
+
+<main class="wrap">
+
+  <!-- ---------- Step 1: choose a source ---------- -->
+  <section class="card" id="inputCard">
+    <h1>Summarise a meeting</h1>
+    <p class="sub">Paste a video link or upload a recording. You get a summary,
+       action items, key decisions, and a transcript you can ask questions about.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-mode="url" role="tab" aria-selected="true">Link</button>
+      <button class="tab" data-mode="file" role="tab" aria-selected="false">Upload</button>
+    </div>
+
+    <!-- URL mode -->
+    <div class="pane active" data-pane="url">
+      <label class="field">
+        <span>Video or audio URL</span>
+        <input id="sourceUrl" type="url" placeholder="https://youtube.com/watch?v=..." autocomplete="off">
+      </label>
+      <p class="hint">YouTube, Vimeo, SoundCloud, or a direct link to an audio file.</p>
+    </div>
+
+    <!-- File mode -->
+    <div class="pane" data-pane="file">
+      <div id="dropZone" class="drop">
+        <input id="fileInput" type="file"
+               accept="audio/*,video/*,.mp3,.m4a,.wav,.flac,.ogg,.opus,.mp4,.mkv,.mov,.avi,.webm">
+        <div class="drop-inner">
+          <span class="drop-icon" aria-hidden="true">↑</span>
+          <strong id="dropTitle">Drop a file here</strong>
+          <span class="hint">or click to browse — mp3, m4a, wav, mp4, mkv…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="field grow">
+        <span>Language</span>
+        <select id="language">
+          <option value="english">English — local Whisper</option>
+          <option value="hinglish">Hindi / Hinglish — Sarvam, translated to English</option>
+        </select>
+      </label>
+      <button id="startBtn" class="primary-btn" type="button">Start</button>
+    </div>
+
+    <p id="inputError" class="error" hidden></p>
+  </section>
+
+  <!-- ---------- Step 2: progress ---------- -->
+  <section class="card" id="progressCard" hidden>
+    <div class="prog-head">
+      <div>
+        <h2 id="progStage">Starting…</h2>
+        <p class="sub" id="progSource"></p>
+      </div>
+      <span class="pct" id="progPct">0%</span>
+    </div>
+    <div class="bar"><div class="bar-fill" id="progBar"></div></div>
+    <p class="hint">Transcription runs locally and takes a few minutes for a long
+       meeting. You can leave this tab open.</p>
+  </section>
+
+  <!-- ---------- Step 3: results ---------- -->
+  <section id="results" hidden>
+
+    <div class="card result-head">
+      <div>
+        <h1 id="mTitle">—</h1>
+        <p class="sub" id="mMeta"></p>
+      </div>
+      <div class="exports">
+        <a id="exportTxt" class="ghost-btn" href="#">Export TXT</a>
+        <a id="exportPdf" class="ghost-btn" href="#">Export PDF</a>
+        <button id="newBtn" class="ghost-btn" type="button">New</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Summary</h3>
+        <div class="body" id="mSummary"></div>
+      </article>
+      <article class="card">
+        <h3>Action Items</h3>
+        <div class="body" id="mActions"></div>
+      </article>
+      <article class="card">
+        <h3>Key Decisions</h3>
+        <div class="body" id="mDecisions"></div>
+      </article>
+      <article class="card">
+        <h3>Open Questions</h3>
+        <div class="body" id="mQuestions"></div>
+      </article>
+    </div>
+
+    <details class="card transcript">
+      <summary><h3>Full transcript</h3></summary>
+      <div class="body mono" id="mTranscript"></div>
+    </details>
+
+    <!-- ---------- Chat ---------- -->
+    <section class="card chat">
+      <h3>Ask about this meeting</h3>
+      <div id="chatLog" class="chat-log">
+        <p class="hint empty">Ask anything — “what did we decide about pricing?”,
+           “who owns the migration?”</p>
+      </div>
+      <form id="chatForm" class="chat-form">
+        <input id="chatInput" type="text" placeholder="Ask a question…" autocomplete="off">
+        <button class="primary-btn" type="submit" id="chatSend">Ask</button>
+      </form>
+    </section>
+
+  </section>
+
+  <!-- ---------- Failure ---------- -->
+  <section class="card error-card" id="errorCard" hidden>
+    <h2>Could not process that</h2>
+    <pre id="errorText"></pre>
+    <button id="retryBtn" class="primary-btn" type="button">Try again</button>
+  </section>
+
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
